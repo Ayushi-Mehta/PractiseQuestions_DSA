@@ -1,0 +1,6 @@
+package Lecture36;
+
+public class flipEquuivalent {
+	// ALL THESE QUESTIONS DONE IN LECTURE 34 PACKAGE
+		//THESE QUESTIONS ARE REALLY IMPORTANT!!!
+}

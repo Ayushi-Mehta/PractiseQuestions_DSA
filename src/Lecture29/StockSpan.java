@@ -2,7 +2,7 @@ package Lecture29;
 
 import java.util.Stack;
 
-public class StockSpam {
+public class StockSpan {
 
 	public static void main(String[] args) {
 		int[] arr = { 80, 50, 70, 30, 20, 40, 90, 10, 5, 35 };

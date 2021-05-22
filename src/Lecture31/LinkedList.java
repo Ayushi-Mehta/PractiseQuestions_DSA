@@ -213,89 +213,118 @@ public class LinkedList {// (outer class)
 	}
 
 	public void reverseR() {
-		//reverseR(null, head);
-		
-		Node temp= head;
+		// reverseR(null, head);
+
+		Node temp = head;
 		reverseR(head);
-		temp.next=null;
+		temp.next = null;
 	}
 
 	private void reverseR(Node prev, Node curr) {
 		if (curr == null) {
-			head=prev;
+			head = prev;
 			return;
 		}
 
-		//reverseR(curr, ahead);
+		// reverseR(curr, ahead);
 		reverseR(curr, curr.next);
-		
+
 		// Node ahead= curr.next;
 		curr.next = prev;
 	}
-	
+
 	private void reverseR(Node curr) {
 		if (curr.next == null) {
-			head=curr;
+			head = curr;
 			return;
 		}
 
-		//reverseR(curr, ahead);
+		// reverseR(curr, ahead);
 		reverseR(curr.next);
-		
+
 		// Node ahead= curr.next;
 		curr.next.next = curr;
 	}
-	
+
 	public void reverseData() throws Exception {
-		int left=0;
-		int right=this.size()-1;
-		
-		while(left<right) {
-			
-			Node ln=getNodeAt(left);
-			Node rn=getNodeAt(right);
-			
-			//swapping data
-			int temp=ln.data;
-			ln.data=rn.data;
-			rn.data=temp;
-			
+		int left = 0;
+		int right = this.size() - 1;
+
+		while (left < right) {
+
+			Node ln = getNodeAt(left);
+			Node rn = getNodeAt(right);
+
+			// swapping data
+			int temp = ln.data;
+			ln.data = rn.data;
+			rn.data = temp;
+
 			left++;
 			right--;
 		}
 	}
-	
+
 	public int mid() {
-		Node slow= head;
-		Node fast= head;
-		
-		while(fast!=null && fast.next!=null ) {//write in this order only
-			//otherwise null pointer exception aa jaegi
-			slow=slow.next;
-			fast=fast.next.next;
-		}
-		
-		return slow.data;
-	}
-	
-	public int KthFromLast(int k) {
-		Node fast=head;
-		
-		for(int i=0;i<k;i++) {
-			fast=fast.next;
-		}
-		
 		Node slow = head;
-		
-		while(fast!=null) {
-			slow=slow.next;
-			fast=fast.next;
+		Node fast = head;
+
+		while (fast != null && fast.next != null) {// write in this order only
+			// otherwise null pointer exception aa jaegi
+			slow = slow.next;
+			fast = fast.next.next;
+		}
+
+		return slow.data;
+	}
+
+	public int KthFromLast(int k) {
+		Node fast = head;
+
+		for (int i = 0; i < k; i++) {
+			fast = fast.next;
+		}
+
+		Node slow = head;
+
+		while (fast != null) {
+			slow = slow.next;
+			fast = fast.next;
 		}
 		return slow.data;
 	}
-	
-	public void intersection() {
-		
+
+	public int intersection() {
+
+		// create new nodes for all nodes of both the LL
+		//create dummy list function with an intersection point
+		Node h1 = n1;
+		Node h2 = n13;
+
+		// logic..
+		return intersection(h1, h2);
 	}
-	
+
+	private int intersection(Node h1, Node h2) {
+		Node fp = h1;
+		Node sp = h2;
+
+		while (fp != sp) {
+			
+			if (fp == null) {
+				fp = h2;
+			} else {
+				fp = fp.next;
+			}
+
+			if (sp == null) {
+				sp = h1;
+			} else {
+				sp = sp.next;
+			}
+		}
+		
+		return fp.data;
+	}
+
 }

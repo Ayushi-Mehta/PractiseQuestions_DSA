@@ -2,7 +2,7 @@ package Lecture30;
 
 import java.util.Stack;
 
-public class MinStack {// IMP QUES
+public class MinStack_IMPORTANT {// IMP QUES
 
 	private Stack<Integer> s = new Stack<Integer>();
 	private int min;

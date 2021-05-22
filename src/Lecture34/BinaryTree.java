@@ -1,6 +1,12 @@
 package Lecture34;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class BinaryTree {
 
@@ -15,7 +21,7 @@ public class BinaryTree {
 	private Node root;
 
 	public BinaryTree() {
-		root = construct(null, true);
+		root = construct(null, true);// IMPORTANT TO STORE IN ROOT ALWAYS
 	}
 
 	// ilc =isLeftChild
@@ -30,7 +36,7 @@ public class BinaryTree {
 			if (ilc == true) {
 				System.out.println("Enter the data for left child of " + parent.data);
 			} else {
-				System.out.println("Enter the data for left child of " + parent.data);
+				System.out.println("Enter the data for right child of " + parent.data);
 			}
 		}
 		int item = scn.nextInt();
@@ -54,6 +60,61 @@ public class BinaryTree {
 		return nn;
 	}
 
+	public BinaryTree(int[] pre, int[] in) {// PreIn
+		root = constructPreIn(pre, 0, pre.length - 1, in, 0, in.length - 1);
+	}
+
+	private Node constructPreIn(int[] pre, int plo, int phi, int[] in, int ilo, int ihi) {
+		if (plo > phi || ilo > ihi)
+			return null;
+
+		Node nn = new Node();
+		nn.data = pre[plo];
+
+		int si = -1;// search index
+		int nel = 0;// number of elements
+
+		for (int i = ilo; i <= ihi; i++) {
+			if (in[i] == pre[plo]) {
+				si = i;
+				break;
+			}
+			nel++;
+		}
+		nn.left = constructPreIn(pre, plo + 1, plo + nel, in, ilo, si - 1);
+		nn.right = constructPreIn(pre, plo + nel + 1, phi, in, si + 1, ihi);
+
+		return nn;
+	}
+
+	public BinaryTree(int[] post, int[] in, int zero) {// PostIn
+		this.root = this.constructPostIn(post, 0, post.length - 1, in, 0, in.length - 1);
+	}
+
+	private Node constructPostIn(int[] post, int plo, int phi, int[] in, int ilo, int ihi) {
+		if (plo > phi || ilo > ihi)
+			return null;
+
+		Node nn = new Node();
+		nn.data = post[phi];
+
+		int si = -1;// search index
+		int nel = 0;// number of elements
+
+		for (int i = ihi; i >= ilo; i--) {
+			if (in[i] == post[phi]) {
+				si = i;
+				break;
+			}
+			nel++;
+		}
+
+		nn.left = constructPostIn(post, plo, phi - nel - 1, in, ilo, si - 1);
+		nn.right = constructPostIn(post, phi - nel, phi - 1, in, si + 1, ihi);
+
+		return nn;
+	}
+
 	public void display() {
 		System.out.println("-------------------------");
 		display(root);
@@ -61,7 +122,6 @@ public class BinaryTree {
 	}
 
 	private void display(Node node) {
-
 		if (node == null) {
 			return;
 		}
@@ -82,10 +142,8 @@ public class BinaryTree {
 		}
 
 		System.out.println(str);
-
 		display(node.left);
 		display(node.right);
-
 	}
 
 	public int size() {
@@ -138,7 +196,6 @@ public class BinaryTree {
 	}
 
 	private int ht(Node node) {
-
 		if (node == null) {
 			return -1;
 		}
@@ -147,9 +204,557 @@ public class BinaryTree {
 		int rh = ht(node.right);
 
 		return Math.max(lh, rh) + 1;
+	}
+
+	private int max = Integer.MIN_VALUE;
+
+	public int diameter() {
+		diameter(root);
+		return max;
+	}
+
+	// O(n^2)
+	private void diameter(Node node) {
+
+		if (node == null)
+			return;
+
+		diameter(node.left);
+		diameter(node.right);
+
+		int presentDiameterRootNode = ht(node.left) + ht(node.right) + 2;
+
+		if (presentDiameterRootNode > max)
+			max = presentDiameterRootNode;
 
 	}
-	
-	
-	
+
+	public int diameter2() {
+		return diameter2(root);
+	}
+
+	// O(n^2)
+	private int diameter2(Node node) {
+		if (node == null)
+			return 0;
+
+		int ld = diameter2(node.left);
+		int rd = diameter2(node.right);
+
+		int sd = ht(node.left) + ht(node.right) + 2; // self node diameter root node -> max distance ?
+
+		return Math.max(sd, Math.max(ld, rd));
+
+	}
+
+	private class DiaPair {
+		int diameter = 0;
+		int ht = -1;
+	}
+
+	public int diameter3() {// IMPORTANT
+		return diameter3(root).diameter;
+	}
+
+	// O(n)
+	private DiaPair diameter3(Node node) {
+		if (node == null) {
+			return new DiaPair();
+		}
+
+		DiaPair ldp = diameter3(node.left);
+		DiaPair rdp = diameter3(node.right);
+
+		DiaPair sdp = new DiaPair();
+
+		// sdp diameter
+		int ld = ldp.diameter;
+		int rd = rdp.diameter;
+		int sd = ldp.ht + rdp.ht + 2;
+
+		sdp.diameter = Math.max(sd, Math.max(ld, rd));
+
+		// sdp ht
+		sdp.ht = Math.max(ldp.ht, rdp.ht) + 1;
+
+		return sdp;
+
+	}
+
+	private boolean res = true;
+
+	public boolean isBalanced() {
+		isBalanced(root);
+		return res;
+	}
+
+	private void isBalanced(Node node) {
+		if (node == null)
+			return;
+
+		isBalanced(node.left);
+		isBalanced(node.right);
+
+		int bf = ht(node.left) - ht(node.right);
+
+		if (bf <= -2 || bf >= 2)
+			res = false;
+
+	}
+
+	public boolean isBalanced2() {
+		return isBalanced2(root);
+	}
+
+	private boolean isBalanced2(Node node) {
+		if (node == null)
+			return true;
+
+		boolean lb = isBalanced2(node.left);
+		boolean rb = isBalanced2(node.right);
+
+		int bf = ht(node.left) - ht(node.right);
+
+		if (lb && rb && (bf == -1 || bf == 0 || bf == 1))
+			return true;
+		else
+			return false;
+	}
+
+	private class BalPair {
+		boolean isBal = true;
+		int ht = -1;
+	}
+
+	public boolean isBalanced3() {// IMPORTANT
+		return isBalanced3(root).isBal;
+	}
+
+	private BalPair isBalanced3(Node node) {
+		if (node == null)
+			return new BalPair();
+
+		BalPair lbp = isBalanced3(node.left);
+		BalPair rbp = isBalanced3(node.right);
+
+		BalPair sbp = new BalPair();
+
+		// sbp isBal
+		boolean lb = lbp.isBal;
+		boolean rb = rbp.isBal;
+		int bf = lbp.ht - rbp.ht;
+
+		if (lb && rb && (bf == -1 || bf == 0 || bf == 1))
+			sbp.isBal = true;
+		else
+			sbp.isBal = false;
+
+		// sbp ht
+		sbp.ht = Math.max(lbp.ht, rbp.ht) + 1;
+
+		return sbp;
+	}
+
+	public boolean flipEquivalent(BinaryTree other) {
+		return flipEquivalent(this.root, other.root);
+	}
+
+	private boolean flipEquivalent(Node n1, Node n2) {
+		if (n1 == null && n2 == null)
+			return true;
+
+		if (n1 == null || n2 == null)
+			return false;
+
+		if (n1.data != n2.data)
+			return false;
+
+		boolean flip = flipEquivalent(n1.left, n2.right) && flipEquivalent(n1.right, n2.left);
+
+		if (flip)
+			return true;
+
+		boolean noflip = flipEquivalent(n1.left, n2.left) && flipEquivalent(n1.right, n2.right);
+
+		return flip || noflip;
+	}
+
+	public void display2() {
+		display2(root);
+	}
+
+	private void display2(Node node) {
+		if (node == null)
+			return;
+
+		System.out.println("hii " + node.data);
+
+		display2(node.left);
+		System.out.println("coming back from left child and going towards right");
+		display2(node.right);
+
+		System.out.println("byee " + node.data);
+
+	}
+
+	public void preorder() {
+		preorder(root);
+		System.out.println();
+	}
+
+	// NLR : preorder
+	// LNR : inorder
+	// LRN : postorder
+	// NRL : rev postorder
+	// RNL : rev inorder
+	// RLN : rev preorder
+	private void preorder(Node node) {
+		if (node == null)
+			return;
+
+		// N
+		System.out.print(node.data + " ");
+
+		// L
+		preorder(node.left);
+
+		// R
+		preorder(node.right);
+
+	}
+
+	private class Pair {
+		Node n;
+		boolean sd;
+		boolean ld;
+		boolean rd;
+	}
+
+	public void preorderI() {
+		Stack<Pair> s = new Stack<>();
+
+		Pair sp = new Pair();
+		sp.n = root;
+
+		s.push(sp);
+
+		while (!s.isEmpty()) {
+			Pair tp = s.peek();
+
+			if (tp.sd == false) {
+				System.out.print(tp.n.data + " ");
+				tp.sd = true;
+			} else if (tp.ld == false) {
+				Pair lp = new Pair();
+				lp.n = tp.n.left;
+				if (lp.n != null) {
+					s.push(lp);
+				}
+				tp.ld = true;
+			} else if (tp.rd == false) {
+				Pair rp = new Pair();
+				rp.n = tp.n.right;
+				if (rp.n != null) {
+					s.push(rp);
+				}
+				tp.rd = true;
+			} else {
+				s.pop();
+			}
+		}
+		System.out.println();
+	}
+
+	public void inorderI() {
+		Stack<Pair> s = new Stack<>();
+
+		Pair sp = new Pair();
+		sp.n = root;
+
+		s.push(sp);
+
+		while (!s.isEmpty()) {
+			Pair tp = s.peek();
+
+			if (tp.ld == false) {
+				Pair lp = new Pair();
+				lp.n = tp.n.left;
+				if (lp.n != null) {
+					s.push(lp);
+				}
+				tp.ld = true;
+			} else if (tp.sd == false) {
+				System.out.print(tp.n.data + " ");
+				tp.sd = true;
+			} else if (tp.rd == false) {
+				Pair rp = new Pair();
+				rp.n = tp.n.right;
+				if (rp.n != null) {
+					s.push(rp);
+				}
+				tp.rd = true;
+			} else {
+				s.pop();
+			}
+		}
+		System.out.println();
+	}
+
+	public void postorderI() {
+		Stack<Pair> s = new Stack<>();
+
+		Pair sp = new Pair();
+		sp.n = root;
+
+		s.push(sp);
+
+		while (!s.isEmpty()) {
+			Pair tp = s.peek();
+
+			if (tp.ld == false) {
+				Pair lp = new Pair();
+				lp.n = tp.n.left;
+				if (lp.n != null) {
+					s.push(lp);
+				}
+				tp.ld = true;
+			} else if (tp.rd == false) {
+				Pair rp = new Pair();
+				rp.n = tp.n.right;
+				if (rp.n != null) {
+					s.push(rp);
+				}
+				tp.rd = true;
+			} else if (tp.sd == false) {
+				System.out.print(tp.n.data + " ");
+				tp.sd = true;
+			} else {
+				s.pop();
+			}
+		}
+		System.out.println();
+	}
+
+	public int sum() {
+		return sum(root);
+	}
+
+	private int sum(Node node) {
+		if (node == null)
+			return 0;
+
+		int ls = sum(node.left);
+		int rs = sum(node.right);
+
+		return ls + rs + node.data;
+	}
+
+	private int maxSum = Integer.MIN_VALUE;
+
+	public int maxSubtreeSum1() {
+		return maxSubtreeSum1(root);
+	}
+
+	private int maxSubtreeSum1(Node node) {
+		if (node == null)
+			return 0;
+
+		int ls = maxSubtreeSum1(node.left);
+		int rs = maxSubtreeSum1(node.right);
+
+		int ts = ls + rs + node.data;
+
+		if (ts > maxSum)
+			maxSum = ts;
+
+		return ts;
+
+	}
+
+	public int maxSubtreeSum2() {
+		return maxSubtreeSum2(root);
+	}
+
+	private int maxSubtreeSum2(Node node) {
+		if (node == null)
+			return Integer.MIN_VALUE;
+
+		int lMaxSubtreeSum = maxSubtreeSum2(node.left);
+		int rMaxSubtreeSum = maxSubtreeSum2(node.right);
+
+		int selfNodeSum = sum(node.left) + sum(node.right) + node.data;
+
+		return Math.max(selfNodeSum, Math.max(lMaxSubtreeSum, rMaxSubtreeSum));
+
+	}
+
+	// mss : max subtree sum
+	private class MSSPair {
+		int mss = Integer.MIN_VALUE;
+		int entireSum = 0;
+	}
+
+	public int maxSubtreeSum3() {
+		return maxSubtreeSum3(root).mss;
+	}
+
+	private MSSPair maxSubtreeSum3(Node node) {
+		if (node == null)
+			return new MSSPair();
+
+		MSSPair lp = maxSubtreeSum3(node.left);
+		MSSPair rp = maxSubtreeSum3(node.right);
+
+		MSSPair sp = new MSSPair();
+
+		// sp maxSubtreeSum
+		sp.mss = Math.max(lp.entireSum + rp.entireSum + node.data, Math.max(lp.mss, rp.mss));
+
+		// sp entiresum
+		sp.entireSum = lp.entireSum + rp.entireSum + node.data;
+
+		return sp;
+	}
+
+	public int min() {
+		return min(root);
+	}
+
+	private int min(Node node) {
+		if (node == null)
+			return Integer.MAX_VALUE;
+
+		int lm = min(node.left);
+		int rm = min(node.right);
+
+		return Math.min(node.data, Math.min(lm, rm));
+	}
+
+	public boolean isBST2() {
+		return isBST2(root);
+	}
+
+	private boolean isBST2(Node node) {
+
+		if (node == null)
+			return true;
+
+		boolean lbst = isBST2(node.left);
+		boolean rbst = isBST2(node.right);
+
+		if (node.data > max(node.left) && node.data < min(node.right) && lbst && rbst)
+			return true;
+		else
+			return false;
+
+	}
+
+	private class BSTPair {
+
+		boolean isbst = true;
+		int max = Integer.MIN_VALUE;
+		int min = Integer.MAX_VALUE;
+
+		Node largestBSTRootNode = null;
+		int largestBSTSize = 0;
+
+	}
+
+	public void isBST3() {
+		BSTPair res = isBST3(root);
+		System.out.println(res.largestBSTRootNode.data);
+		System.out.println(res.largestBSTSize);
+	}
+
+	private BSTPair isBST3(Node node) {
+
+		if (node == null)
+			return new BSTPair();
+
+		BSTPair lp = isBST3(node.left);
+		BSTPair rp = isBST3(node.right);
+
+		BSTPair sp = new BSTPair();
+
+		if (node.data > lp.max && node.data < rp.min && lp.isbst && rp.isbst) {
+			sp.isbst = true;
+			sp.largestBSTRootNode = node;
+			sp.largestBSTSize = lp.largestBSTSize + rp.largestBSTSize + 1;
+		} else {
+			sp.isbst = false;
+
+			if (lp.largestBSTSize > rp.largestBSTSize) {
+				sp.largestBSTRootNode = lp.largestBSTRootNode;
+				sp.largestBSTSize = lp.largestBSTSize;
+			} else {
+				sp.largestBSTRootNode = rp.largestBSTRootNode;
+				sp.largestBSTSize = rp.largestBSTSize;
+			}
+		}
+
+		sp.max = Math.max(node.data, Math.max(lp.max, rp.max));
+		sp.min = Math.min(node.data, Math.min(lp.min, rp.min));
+
+		return sp;
+
+	}
+
+	private class VOPair {
+
+		Node node;
+		int vl;
+
+		public VOPair(Node node, int vl) {
+			this.node = node;
+			this.vl = vl;
+		}
+
+		@Override
+		public String toString() {
+			return node.data + " -> " + vl;
+		}
+	}
+
+	public void verticalOrderTraversal() {
+
+		HashMap<Integer, ArrayList<Integer>> map = new HashMap<>();
+
+		Queue<VOPair> q = new LinkedList<>();
+
+		VOPair sp = new VOPair(root, 0);
+		q.add(sp);
+
+		while (!q.isEmpty()) {
+
+			VOPair rp = q.remove();
+
+			if (!map.containsKey(rp.vl))
+				map.put(rp.vl, new ArrayList<>());
+
+			map.get(rp.vl).add(rp.node.data);
+
+			if (rp.node.left != null) {
+
+				VOPair lcp = new VOPair(rp.node.left, rp.vl - 1);
+				q.add(lcp);
+
+			}
+
+			if (rp.node.right != null) {
+
+				VOPair rcp = new VOPair(rp.node.right, rp.vl + 1);
+				q.add(rcp);
+
+			}
+
+		}
+
+		ArrayList<Integer> keys = new ArrayList<Integer>(map.keySet());
+		Collections.sort(keys);
+
+		for (int key : keys)
+			System.out.println(key + " -> " + map.get(key));
+
+	}
+
 }

@@ -18,7 +18,7 @@ public class GenericTree {
 	private Node root;
 
 	public GenericTree() {
-		root = construct(null, -1);//very imp to store in root
+		root = construct(null, -1);// very imp to store in root
 	}
 
 	private Node construct(Node parent, int ith) {
@@ -148,7 +148,6 @@ public class GenericTree {
 		// smaller prob
 		for (Node child : node.children) {
 			mirror(child);
-
 		}
 
 		// work
@@ -184,7 +183,7 @@ public class GenericTree {
 		linearize(root);
 	}
 
-	private void linearize(Node node) {
+	private void linearize(Node node) {//IMPORTANT QUESTION!!
 
 		for (Node child : node.children) {
 			linearize(child);
@@ -283,7 +282,7 @@ public class GenericTree {
 	public void levelorderlinewise() {
 		// queue used for level by level, stack used for depth search
 		Queue<Node> q = new LinkedList<>();// primary
-		Queue<Node> h = new LinkedList<>();
+		Queue<Node> h = new LinkedList<>();//helper
 		q.add(root);
 
 		while (!q.isEmpty()) {
@@ -299,6 +298,7 @@ public class GenericTree {
 			}
 			if (q.isEmpty()) {
 				System.out.println();
+				//swap or this
 				q = h;
 				h = new LinkedList<>();
 			}
@@ -306,7 +306,7 @@ public class GenericTree {
 		System.out.println();
 	}
 
-	public void levelorderzigzag() {
+	public void levelorderzigzag_Important() {
 		// two stacks used
 		Stack<Node> s = new Stack<>();
 		Stack<Node> h = new Stack<>();
@@ -342,5 +342,4 @@ public class GenericTree {
 		}
 	}
 
-	
 }

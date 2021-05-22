@@ -1,0 +1,6 @@
+package Lecture35;
+
+public class DiameterOfTree {
+	// ALL THESE QUESTIONS DONE IN LECTURE 34 PACKAGE
+	//THESE QUESTIONS ARE REALLY IMPORTANT!!!
+}
