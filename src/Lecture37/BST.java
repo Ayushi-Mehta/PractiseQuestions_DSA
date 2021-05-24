@@ -255,7 +255,7 @@ public class BST {
 		return node;
 	}
 
-	public void remove(int item) {
+	public void remove(int item) {//VERY IMPORTANT QUESTION!!
 		if(root == null)
 			return ;
 		
@@ -272,7 +272,7 @@ public class BST {
 			remove(root, null, item);
 	}
 
-	private void remove(Node node, Node parent, int item) {
+	private void remove(Node node, Node parent, int item) {//VERY VERY IMPORTANT
 		if (node == null)
 			return;
 
@@ -291,7 +291,6 @@ public class BST {
 			}
 			// case 2 : left != null && right == null
 			else if (node.left != null && node.right == null) {
-
 				if (node.data <= parent.data)
 					parent.left = node.left;
 				else

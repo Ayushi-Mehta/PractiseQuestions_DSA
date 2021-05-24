@@ -49,7 +49,6 @@ public class MergeKSortedLists {// O(nlogk)
 	}
 
 	public static ArrayList<Integer> mergeTwoSortedLists(ArrayList<ArrayList<Integer>> List) {
-
 		HeapGeneric<Pair> heap = new HeapGeneric<>();
 
 		ArrayList<Integer> res = new ArrayList<>();
@@ -76,5 +75,4 @@ public class MergeKSortedLists {// O(nlogk)
 		}
 		return res;
 	}
-
 }

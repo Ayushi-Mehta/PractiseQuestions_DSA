@@ -19,7 +19,6 @@ public class HashMap<K, V> {
 		Node(K key, V value) {
 			this.key = key;
 			this.value = value;
-
 		}
 	}
 
@@ -31,7 +30,6 @@ public class HashMap<K, V> {
 	}
 
 	public HashMap(int buckets) {
-
 		bucketArray = new ArrayList<>();
 		size = 0;
 
@@ -44,7 +42,6 @@ public class HashMap<K, V> {
 		int code = key.hashCode();
 		int bn = code % bucketArray.size();// bucket number
 		return bn;
-
 	}
 
 	public void put(K key, V value) {
@@ -64,7 +61,7 @@ public class HashMap<K, V> {
 		// if flow of your code comes here, it means key was absent
 		Node nn = new Node(key, value);
 
-		Node head = bucketArray.get(bn);
+		Node head = bucketArray.get(bn);//first index
 		nn.next = head;
 		bucketArray.set(bn, nn);
 
@@ -157,7 +154,6 @@ public class HashMap<K, V> {
 
 	@Override
 	public String toString() {
-
 		String s = "";
 
 		for (Node temp : bucketArray) {
@@ -169,5 +165,4 @@ public class HashMap<K, V> {
 		}
 		return s;
 	}
-
 }

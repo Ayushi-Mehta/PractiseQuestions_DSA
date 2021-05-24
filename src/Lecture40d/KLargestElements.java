@@ -5,7 +5,6 @@ import Lecture40c.Heap;
 public class KLargestElements {
 
 	public static void main(String[] args) {
-
 		int[] arr= {20,50,30,45,10,5,57,40};
 		kLargestElements(arr, 3);
 	}
@@ -30,5 +29,4 @@ public class KLargestElements {
 			System.out.println(heap.remove());
 		}
 	}
-
 }

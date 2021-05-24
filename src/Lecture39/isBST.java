@@ -1,0 +1,7 @@
+package Lecture39;
+
+public class isBST {
+	// ALL THESE QUESTIONS DONE IN LECTURE 37 PACKAGE
+			//THESE QUESTIONS ARE REALLY IMPORTANT!!!
+
+}
