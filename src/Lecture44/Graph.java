@@ -38,12 +38,10 @@ public class Graph {
 
 	public int numEdges() {
 		int sum = 0;
-
 		for (int key : map.keySet()) {
 			sum += map.get(key).size();
 		}
-
-		return sum / 2;
+		return sum / 2;// IMPORTANT
 	}
 
 	public void display() {
@@ -53,7 +51,7 @@ public class Graph {
 	}
 
 	public boolean hasPath(int src, int dest, HashSet<Integer> visited) {
-// dest=destination
+		// dest=destination
 		// mark source as visited
 		visited.add(src);
 
@@ -64,17 +62,13 @@ public class Graph {
 
 		// check if path exists via neighbours
 		for (int nbr : map.get(src).keySet()) {
-
 			if (!visited.contains(nbr)) {// visited[nbr]==false
-
 				boolean res = hasPath(nbr, dest, visited);
-
 				if (res) {
 					return true;
 				}
 			}
 		}
-
 		return false;
 	}
 
@@ -92,13 +86,10 @@ public class Graph {
 
 		// check if path exists via neighbours
 		for (int nbr : map.get(src).keySet()) {
-
 			if (!visited.contains(nbr)) {// visited[nbr]==false
-
 				printAllPath(nbr, dest, visited, str + nbr);
 			}
 		}
-
 		// undo
 		visited.remove(src);
 	}
@@ -106,13 +97,11 @@ public class Graph {
 	// O(V+E)-All after here
 	public boolean BFS(int src, int dst) {
 		// BREADTH FIRST SEARCH : ALWAYS GUARANTEES SHORTEST PATH
-
 		HashSet<Integer> visited = new HashSet<Integer>();
 		Queue<Integer> q = new LinkedList<Integer>();
 		q.add(src);
 
 		while (!q.isEmpty()) {
-
 			// remove
 			int rn = q.remove();
 
@@ -135,10 +124,8 @@ public class Graph {
 					q.add(nbr);
 				}
 			}
-
 		}
 		return false;
-
 	}
 
 	public boolean DFS(int src, int dst) {
@@ -195,7 +182,7 @@ public class Graph {
 
 				if (visited.contains(rn)) {
 					continue;// so that second time if we encounter/ a node is being removed then you can
-								// ignore it ie the rest of the while statement wont work for it
+							// ignore it ie the rest of the while statement wont work for it
 				}
 
 				// visited mark
