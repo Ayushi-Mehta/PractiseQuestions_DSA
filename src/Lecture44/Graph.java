@@ -468,7 +468,8 @@ public class Graph {
 	}
 
 	public void kruskalAlgorithm() {// O(V)+O(2E)+O(ElogE)+O(E)==O(ElogE)-> worst case-> O(ElogV)
-
+		//O(h)=O(log(base2)n)
+		
 		DisjointSet ds = new DisjointSet();
 
 		// create a new set for all the vertices

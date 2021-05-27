@@ -8,6 +8,7 @@ import Lecture44.Graph.DisjointSet;
 import Lecture44.Graph.EdgePair;
 
 public class kruskalAlgorithm {
+	//done in graph in lecture 44
 
 	private class DisjointSet {
 
