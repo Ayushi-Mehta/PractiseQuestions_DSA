@@ -3,6 +3,15 @@ package Lecture31;
 public class LinkedList {// (outer class)
 
 	private class Node {// nested class(inner class)
+		public Node(int i) {
+			data = i;
+		}
+
+		public Node() {
+			data = 0;
+			next = null;
+		}
+
 		// made private as node class should only be used in linked list and not
 		// anywhere else
 		int data;
@@ -295,9 +304,36 @@ public class LinkedList {// (outer class)
 	}
 
 	public int intersection() {
-
+		// createDummyList
 		// create new nodes for all nodes of both the LL
-		//create dummy list function with an intersection point
+		// create dummy list function with an intersection point
+		Node n1 = new Node(10);
+		Node n2 = new Node(20);
+		Node n3 = new Node(30);
+		Node n4 = new Node(40);
+		Node n5 = new Node(50);
+		Node n6 = new Node(60);
+		Node n7 = new Node(70);
+		Node n8 = new Node(80);
+		Node n9 = new Node(90);
+		Node n10 = new Node(100);
+		Node n11 = new Node(110);
+		Node n12 = new Node(120);
+		Node n13 = new Node(130);
+
+		n1.next = n2;
+		n2.next = n3;
+		n3.next = n4;
+		n4.next = n5;
+		n5.next = n6;
+		n6.next = n7;
+		n7.next = n8;
+		n8.next = n3;
+		n9.next = n10;
+		n13.next = n12;
+		n12.next = n11;
+		n11.next = n7;
+
 		Node h1 = n1;
 		Node h2 = n13;
 
@@ -310,21 +346,147 @@ public class LinkedList {// (outer class)
 		Node sp = h2;
 
 		while (fp != sp) {
-			
 			if (fp == null) {
 				fp = h2;
 			} else {
 				fp = fp.next;
 			}
-
 			if (sp == null) {
 				sp = h1;
 			} else {
 				sp = sp.next;
 			}
 		}
-		
 		return fp.data;
+	}
+
+	public void kReverse(int k) {
+		head = kReverse(head, k);
+	}
+
+	private Node kReverse(Node node, int k) {
+		// base case
+		if (node == null) {
+			return null;
+		}
+
+		// to identify the argument of smaller problem
+		Node temp = node;
+		for (int i = 1; i <= k && temp != null; i++) {
+			temp = temp.next;
+		}
+
+		// smaller problem: reverse set 2 and 3
+		Node prev = kReverse(temp, k);
+
+		// self work:reverse set 1
+		// reverse pointer iteratively
+		Node curr = node;
+		while (curr != temp) {
+			Node ahead = curr.next;
+			curr.next = prev;
+			prev = curr;
+			curr = ahead;
+		}
+		return prev;
+	}
+
+	// FLOYD CYCLE DETECTION ALGORITHM
+	public void createdummylistDetectLoop() {
+		// createDummyList
+		// create new nodes for all nodes of both the LL
+		// create dummy list function with an intersection point
+		Node n1 = new Node(10);
+		Node n2 = new Node(20);
+		Node n3 = new Node(30);
+		Node n4 = new Node(40);
+		Node n5 = new Node(50);
+		Node n6 = new Node(60);
+		Node n7 = new Node(70);
+		Node n8 = new Node(80);
+
+		n1.next = n2;
+		n2.next = n3;
+		n3.next = n4;
+		n4.next = n5;
+		n5.next = n6;
+		n6.next = n7;
+		n7.next = n8;
+		n8.next = n3;
+
+		// logic..
+		System.out.println(detectLoop(n1));
+	}
+
+	private boolean detectLoop(Node h1) {
+		Node slow = h1;
+		Node fast = h1;
+
+		while (fast != null && fast.next != null) {
+			slow = slow.next;
+			fast = fast.next.next;
+
+			if (slow == fast) {
+				// removeLoop(slow,h1);
+				removeLoop2(slow, h1);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// O(n)
+	public void removeLoop(Node meet, Node h) {
+		// no. of nodes in loop
+		Node temp = meet;
+		int count = 1;
+		while (temp.next != meet) {
+			temp = temp.next;
+			count++;
+		}
+
+		// move a pointer count distance ahead
+		Node fast = h;
+		for (int i = 1; i <= count; i++) {
+			fast = fast.next;
+		}
+
+		// make slow and fast move at same speed
+		Node slow = h;
+		while (slow.next != fast.next) {
+			slow = slow.next;
+			fast = fast.next;
+		}
+
+		// break loop
+		fast.next = null;
+
+		// print ll
+		Node t = h;
+		while (t != null) {
+			System.out.print(t.data + " ");
+			t = t.next;
+		}
+	}
+
+	// FLOYD CYCLE REMOVAL ALGORITHM
+	public void removeLoop2(Node meet, Node h) {
+		Node start = h;
+		Node loop = meet;
+
+		while (start.next != loop.next) {
+			start = start.next;
+			loop = loop.next;
+		}
+
+		loop.next = null;
+
+		// print ll
+		Node t = h;
+		while (t != null) {
+			System.out.print(t.data + " ");
+			t = t.next;
+		}
 	}
 
 }

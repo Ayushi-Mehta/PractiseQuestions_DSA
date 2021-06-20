@@ -4,10 +4,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
 
-import Lecture43.BTCreate;
-import Lecture43.LevelOrderToBinaryTree_IMPORTANT.Node;
 
-public class BTCreateFromLevelOrder {
+public class BTCreate {
 
 	private class Node {
 		int data;
@@ -21,7 +19,7 @@ public class BTCreateFromLevelOrder {
 
 	private Node root;
 	Scanner scn = new Scanner(System.in);
-
+	
 	public void construct() {
 		Queue<Node> q = new LinkedList<>();
 
@@ -79,4 +77,5 @@ public class BTCreateFromLevelOrder {
 		bt.construct();
 		bt.display();
 	}
+
 }

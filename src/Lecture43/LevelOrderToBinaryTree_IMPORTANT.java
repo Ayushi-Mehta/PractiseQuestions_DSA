@@ -78,7 +78,7 @@ public class LevelOrderToBinaryTree_IMPORTANT {
 	}
 	
 	public static void main(String[] args) {
-		BTCreate bt = new BTCreate() ;
+		LevelOrderToBinaryTree_IMPORTANT bt = new LevelOrderToBinaryTree_IMPORTANT() ;
 		bt.construct();
 		bt.display();
 	}

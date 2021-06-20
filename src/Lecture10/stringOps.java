@@ -7,11 +7,14 @@ public class stringOps {
 
 	public static void main(String[] args) {
 		System.out.println("give string");
-		Scanner scn=new Scanner(System.in);
-		String str=scn.nextLine();
-		 ArrayList<String> k=countPalindromicSubstrings(str);
-	        System.out.print(k);
-	        
+		//Scanner scn=new Scanner(System.in);
+		//String str=scn.nextLine();
+		System.out.println(palindrome("fssf"));
+		System.out.println(palindrome("ss"));
+		System.out.println(palindrome("fss"));
+//		 ArrayList<String> k=countPalindromicSubstrings(str);
+//	        System.out.print(k);
+//	        
 		//reverse(str);
 		//System.out.println(reverse(str));
 	}
@@ -27,12 +30,15 @@ public class stringOps {
 		 return list;
 	}
 	public static boolean palindrome(String str) {
-		for(int i=0;i<str.length();i++) {
-			for(int j=str.length()-1;j>i;j--) {
+		for(int i=0,j=str.length()-1;i<str.length() && j>i;i++,j--) {
 				if(str.charAt(i) != str.charAt(j)) {
+					System.out.println(str.charAt(i)+" "+i);
+					System.out.println(str.charAt(j)+" "+j);
 					return false;
 				}
-			}
+				System.out.println(str.charAt(i)+" "+i);
+				System.out.println(str.charAt(j)+" "+j);
+			
 		}
 		return true;
 	}
